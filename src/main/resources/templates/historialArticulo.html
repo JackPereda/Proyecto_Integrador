@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Artículo - Inventario</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+<div class="sideBar">
+    <h2>
+        <ion-icon name="cube-outline"></ion-icon>
+        INVENTARIOS
+    </h2>
+    <ul>
+        <li><a href="/articulos">
+            <ion-icon name="list-outline"></ion-icon>
+            Mostrar Artículos</a></li>
+        <li><a href="/articulos/registrarArticulo">
+            <ion-icon name="add-circle-outline"></ion-icon>
+            Registrar Artículo</a></li>
+        <li><a href="/articulos/gestionar">
+            <ion-icon name="create-outline"></ion-icon>
+            Editar Registro</a></li>
+        <li><a href="/movimientos">
+            <ion-icon name="swap-horizontal-outline"></ion-icon>
+            Movimientos</a></li>
+        <li><a href="/movimientos/historial">
+            <ion-icon name="time-outline"></ion-icon>
+            Historial</a></li>
+        <li><a href="/reportes">
+            <ion-icon name="document-text-outline"></ion-icon>
+            Reportes</a></li>
+        <li><a href="/loginCCPLL">
+            <ion-icon name="log-out-outline"></ion-icon>
+            Cerrar Sesión</a></li>
+    </ul>
+</div>
+
+<div class="contenido">
+    <h1>
+        <ion-icon name="time-outline"></ion-icon>
+        Historial de Movimientos - <span th:text="${articulo.descripcion}">Artículo</span>
+    </h1>
+
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <div>
+                <h2>Información del Artículo</h2>
+                <p><strong>Código:</strong> <span th:text="${articulo.codigo}"></span></p>
+                <p><strong>Descripción:</strong> <span th:text="${articulo.descripcion}"></span></p>
+                <p><strong>Stock Actual:</strong> <span th:text="${articulo.inventarioFinal}" class="cantidad"></span></p>
+            </div>
+            <div>
+                <a th:href="@{/movimientos}" class="btn-primary">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    Volver a Movimientos
+                </a>
+            </div>
+        </div>
+
+        <h3>Historial de Movimientos</h3>
+
+        <div class="cantidad" style="margin-bottom: 15px;">
+            Total de movimientos: <span th:text="${historial.size()}">0</span>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Fecha y Hora</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Stock Anterior</th>
+                <th>Stock Nuevo</th>
+                <th>Variación</th>
+                <th>Motivo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="movimiento : ${historial}" th:class="${movimiento.tipoMovimiento == 'ENTRADA' ? 'movimiento-entrada' : 'movimiento-salida'}">
+                <td th:text="${movimiento.fechaFormateada}">Fecha</td>
+                <td>
+                    <span th:if="${movimiento.tipoMovimiento == 'ENTRADA'}" class="categoria-badge" style="background: #d4edda; color: #155724;">
+                        <ion-icon name="arrow-down-circle-outline"></ion-icon> ENTRADA
+                    </span>
+                    <span th:if="${movimiento.tipoMovimiento == 'SALIDA'}" class="categoria-badge" style="background: #f8d7da; color: #721c24;">
+                        <ion-icon name="arrow-up-circle-outline"></ion-icon> SALIDA
+                    </span>
+                </td>
+                <td th:text="${movimiento.cantidad}" class="cantidad">0</td>
+                <td th:text="${movimiento.stockAnterior}" class="cantidad">0</td>
+                <td th:text="${movimiento.stockNuevo}" class="cantidad">0</td>
+                <td>
+                    <span th:if="${movimiento.tipoMovimiento == 'ENTRADA'}" style="color: #28a745; font-weight: bold;">
+                        +<span th:text="${movimiento.cantidad}">0</span>
+                    </span>
+                    <span th:if="${movimiento.tipoMovimiento == 'SALIDA'}" style="color: #dc3545; font-weight: bold;">
+                        -<span th:text="${movimiento.cantidad}">0</span>
+                    </span>
+                </td>
+                <td th:text="${movimiento.motivo} ?: 'Sin especificar'">Motivo</td>
+            </tr>
+            <tr th:if="${historial.empty}">
+                <td colspan="7" style="text-align: center; color: #6c757d;">
+                    <ion-icon name="alert-circle-outline" style="font-size: 24px; margin-right: 10px;"></ion-icon>
+                    No hay movimientos registrados para este artículo
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

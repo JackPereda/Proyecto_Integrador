@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reportes - Inventario</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+<div class="sideBar">
+    <h2>
+        <ion-icon name="cube-outline"></ion-icon>
+        INVENTARIOS
+    </h2>
+    <ul>
+        <li><a href="/articulos">
+            <ion-icon name="list-outline"></ion-icon>
+            Mostrar Artículos</a></li>
+        <li><a href="/articulos/registrarArticulo">
+            <ion-icon name="add-circle-outline"></ion-icon>
+            Registrar Artículo</a></li>
+        <li><a href="/articulos/gestionar">
+            <ion-icon name="create-outline"></ion-icon>
+            Editar Registro</a></li>
+        <li><a href="/movimientos">
+            <ion-icon name="swap-horizontal-outline"></ion-icon>
+            Movimientos</a></li>
+        <li><a href="/movimientos/historial">
+            <ion-icon name="time-outline"></ion-icon>
+            Historial</a></li>
+        <li><a href="/reportes" class="active">
+            <ion-icon name="document-text-outline"></ion-icon>
+            Reportes</a></li>
+        <li><a href="/loginCCPLL">
+            <ion-icon name="log-out-outline"></ion-icon>
+            Cerrar Sesión</a></li>
+    </ul>
+</div>
+
+<div class="contenido">
+    <h1>
+        <ion-icon name="document-text-outline"></ion-icon>
+        Reportes de Inventario
+    </h1>
+
+    <div class="card">
+        <h2>Generar Reportes</h2>
+        <p>Seleccione el tipo de reporte que desea generar:</p>
+
+        <div class="report-options">
+            <div class="report-option">
+                <h3>
+                    <ion-icon name="document-attach-outline"></ion-icon>
+                    Reporte de Inventario Excel
+                </h3>
+                <p>Exporte el inventario completo a Excel con todos los artículos y stock actual</p>
+                <a th:href="@{/reportes/exportar-excel}" class="btn-primary">
+                    <ion-icon name="download-outline"></ion-icon>
+                    Descargar Excel
+                </a>
+            </div>
+
+            <div class="report-option">
+                <h3>
+                    <ion-icon name="stats-chart-outline"></ion-icon>
+                    Reporte de Movimientos
+                </h3>
+                <p>Historial completo de entradas y salidas del sistema (Próximamente)</p>
+                <button class="btn-primary" disabled>
+                    <ion-icon name="time-outline"></ion-icon>
+                    Próximamente
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

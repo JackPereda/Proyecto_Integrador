@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <title>LOGIN - Sistema de Inventarios</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body class="login-page">
+<div class="loginCCPLL">
+    <img th:src="@{/images/Isotipo.jpg}" alt="Logo CCPLL" class="logo">
+    <h2>Iniciar Sesión</h2>
+    <form action="/loginCCPLL" method="post">
+        <label for="usuario">Usuario</label>
+        <input type="text" id="usuario" name="usuario" required placeholder="Ingrese su usuario">
+
+        <label for="contraseña">Contraseña</label>
+        <input type="password" id="contraseña" name="contraseña" required placeholder="Ingrese su contraseña">
+
+        <button type="submit">Ingresar al Sistema</button>
+    </form>
+</div>
+</body>
+</html>

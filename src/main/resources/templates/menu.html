@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Menu - Gestor de Inventarios</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+<div class="sideBar">
+    <h2>
+        <ion-icon name="cube-outline"></ion-icon>
+        INVENTARIOS
+    </h2>
+    <ul>
+        <li><a href="/articulos">
+            <ion-icon name="list-outline"></ion-icon>
+            Mostrar Artículos</a></li>
+        <li><a href="/articulos/registrarArticulo">
+            <ion-icon name="add-circle-outline"></ion-icon>
+            Registrar Artículo</a></li>
+        <li><a href="/articulos/gestionar">
+            <ion-icon name="create-outline"></ion-icon>
+            Editar Registro</a></li>
+        <li><a href="/movimientos">
+            <ion-icon name="swap-horizontal-outline"></ion-icon>
+            Movimientos</a></li>
+        <li><a href="/movimientos/historial">
+            <ion-icon name="time-outline"></ion-icon>
+            Historial</a></li>
+        <li><a href="/reportes">
+            <ion-icon name="document-text-outline"></ion-icon>
+            Reportes</a></li>
+        <li><a href="/loginCCPLL">
+            <ion-icon name="log-out-outline"></ion-icon>
+            Cerrar Sesión</a></li>
+    </ul>
+</div>
+
+<div class="contenido">
+    <h1>Bienvenido al Sistema de Inventarios</h1>
+
+    <!-- Mensajes -->
+    <div th:if="${success}" class="mensaje-exito">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <span th:text="${success}"></span>
+    </div>
+
+    <div th:if="${error}" class="mensaje-error">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="card">
+        <h2>
+            <ion-icon name="grid-outline"></ion-icon>
+            Funcionalidades Disponibles
+        </h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <ion-icon name="list-outline"></ion-icon>
+                <h3>Mostrar Artículos</h3>
+                <p>Consulta el inventario actual de todos los artículos</p>
+            </div>
+            <div class="feature-item">
+                <ion-icon name="add-circle-outline"></ion-icon>
+                <h3>Registrar Artículo</h3>
+                <p>Agrega nuevos artículos al sistema con código automático</p>
+            </div>
+            <div class="feature-item">
+                <ion-icon name="create-outline"></ion-icon>
+                <h3>Editar Registro</h3>
+                <p>Gestiona y edita artículos existentes en el sistema</p>
+            </div>
+            <div class="feature-item">
+                <ion-icon name="swap-horizontal-outline"></ion-icon>
+                <h3>Movimientos</h3>
+                <p>Registra entradas y salidas de inventario</p>
+            </div>
+            <div class="feature-item">
+                <ion-icon name="time-outline"></ion-icon>
+                <h3>Historial</h3>
+                <p>Consulta el historial completo de movimientos</p>
+            </div>
+            <div class="feature-item">
+                <ion-icon name="document-text-outline"></ion-icon>
+                <h3>Reportes</h3>
+                <p>Genera reportes del sistema</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de Movimientos - Inventario</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+<div class="sideBar">
+    <h2>
+        <ion-icon name="cube-outline"></ion-icon>
+        INVENTARIOS
+    </h2>
+    <ul>
+        <li><a href="/articulos">
+            <ion-icon name="list-outline"></ion-icon>
+            Mostrar Artículos</a></li>
+        <li><a href="/articulos/registrarArticulo">
+            <ion-icon name="add-circle-outline"></ion-icon>
+            Registrar Artículo</a></li>
+        <li><a href="/articulos/gestionar">
+            <ion-icon name="create-outline"></ion-icon>
+            Editar Registro</a></li>
+        <li><a href="/movimientos">
+            <ion-icon name="swap-horizontal-outline"></ion-icon>
+            Movimientos</a></li>
+        <li><a href="/movimientos/historial" class="active">
+            <ion-icon name="time-outline"></ion-icon>
+            Historial</a></li>
+        <li><a href="/reportes">
+            <ion-icon name="document-text-outline"></ion-icon>
+            Reportes</a></li>
+        <li><a href="/loginCCPLL">
+            <ion-icon name="log-out-outline"></ion-icon>
+            Cerrar Sesión</a></li>
+    </ul>
+</div>
+
+<div class="contenido">
+    <h1>
+        <ion-icon name="time-outline"></ion-icon>
+        Historial Completo de Movimientos
+    </h1>
+
+    <div class="card">
+        <h2>Registro de Todos los Movimientos</h2>
+
+        <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div class="cantidad">
+                Total de movimientos: <span th:text="${historial.size()}">0</span>
+            </div>
+            <a th:href="@{/movimientos}" class="btn-primary">
+                <ion-icon name="arrow-back-outline"></ion-icon>
+                Volver a Movimientos
+            </a>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Fecha y Hora</th>
+                <th>Artículo</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Stock Anterior</th>
+                <th>Stock Nuevo</th>
+                <th>Motivo</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="movimiento : ${historial}" th:class="${movimiento.tipoMovimiento == 'ENTRADA' ? 'movimiento-entrada' : 'movimiento-salida'}">
+                <td th:text="${movimiento.fechaFormateada}">Fecha</td>
+                <td>
+                    <strong th:text="${movimiento.codigoArticulo}">Código</strong><br>
+                    <small th:text="${movimiento.descripcionArticulo}">Descripción</small>
+                </td>
+                <td>
+                    <span th:if="${movimiento.tipoMovimiento == 'ENTRADA'}" class="categoria-badge" style="background: #d4edda; color: #155724;">
+                        <ion-icon name="arrow-down-circle-outline"></ion-icon> ENTRADA
+                    </span>
+                    <span th:if="${movimiento.tipoMovimiento == 'SALIDA'}" class="categoria-badge" style="background: #f8d7da; color: #721c24;">
+                        <ion-icon name="arrow-up-circle-outline"></ion-icon> SALIDA
+                    </span>
+                </td>
+                <td th:text="${movimiento.cantidad}" class="cantidad">0</td>
+                <td th:text="${movimiento.stockAnterior}" class="cantidad">0</td>
+                <td th:text="${movimiento.stockNuevo}" class="cantidad">0</td>
+                <td th:text="${movimiento.motivo} ?: 'Sin especificar'">Motivo</td>
+            </tr>
+            <tr th:if="${historial.empty}">
+                <td colspan="7" style="text-align: center; color: #6c757d;">
+                    <ion-icon name="alert-circle-outline" style="font-size: 24px; margin-right: 10px;"></ion-icon>
+                    No hay movimientos registrados
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Artículo - Inventario</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+<div class="sideBar">
+    <h2>
+        <ion-icon name="cube-outline"></ion-icon>
+        INVENTARIOS
+    </h2>
+    <ul>
+        <li><a href="/articulos">
+            <ion-icon name="list-outline"></ion-icon>
+            Mostrar Artículos</a></li>
+        <li><a href="/articulos/registrarArticulo">
+            <ion-icon name="add-circle-outline"></ion-icon>
+            Registrar Artículo</a></li>
+        <li><a href="/articulos/gestionar">
+            <ion-icon name="create-outline"></ion-icon>
+            Editar Registro</a></li>
+        <li><a href="/movimientos">
+            <ion-icon name="swap-horizontal-outline"></ion-icon>
+            Movimientos</a></li>
+        <li><a href="/movimientos/historial">
+            <ion-icon name="time-outline"></ion-icon>
+            Historial</a></li>
+        <li><a href="/reportes">
+            <ion-icon name="document-text-outline"></ion-icon>
+            Reportes</a></li>
+        <li><a href="/loginCCPLL">
+            <ion-icon name="log-out-outline"></ion-icon>
+            Cerrar Sesión</a></li>
+    </ul>
+</div>
+
+<div class="contenido">
+    <h1>
+        <ion-icon name="create-outline"></ion-icon>
+        Editar Artículo
+    </h1>
+
+    <!-- Mensajes -->
+    <div th:if="${success}" class="mensaje-exito">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <span th:text="${success}"></span>
+    </div>
+
+    <div th:if="${error}" class="mensaje-error">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="card">
+        <form th:action="@{/articulos/editar/{id}(id=${articulo.id})}" th:object="${articulo}" method="post">
+            <div class="form-group">
+                <label for="codigo">Código del Artículo:</label>
+                <input type="text" id="codigo" th:field="*{codigo}" readonly style="background-color: #f8f9fa; color: #6c757d;">
+                <small>⚠️ Código no editable</small>
+            </div>
+
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <input type="text" id="descripcion" th:field="*{descripcion}" required placeholder="Ingrese la descripción del artículo">
+                <small>Nombre o descripción del artículo (obligatorio)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="unidad">Unidad de Medida:</label>
+                <select id="unidad" th:field="*{unidad}" required>
+                    <option value="">Seleccione una unidad</option>
+                    <option value="UNIDAD">UNIDAD</option>
+                    <option value="KILO">KILO</option>
+                    <option value="LITRO">LITRO</option>
+                    <option value="METRO">METRO</option>
+                    <option value="CAJA">CAJA</option>
+                    <option value="PAQUETE">PAQUETE</option>
+                    <option value="MILLAR">MILLAR</option>
+                </select>
+                <small>Unidad en la que se mide el artículo (obligatorio)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="precio">Precio Unitario (S/):</label>
+                <input type="number" id="precio" th:field="*{precio}" step="0.01" min="0" placeholder="0.00" required>
+                <small>Precio por unidad del artículo (obligatorio)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="inventarioInicial">Inventario Inicial:</label>
+                <input type="number" id="inventarioInicial" th:field="*{inventarioInicial}" min="0" required>
+                <small>Cantidad inicial en inventario (obligatorio)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="entradas">Entradas:</label>
+                <input type="number" id="entradas" th:field="*{entradas}" min="0" value="0">
+                <small>Cantidad de entradas (opcional)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="salidas">Salidas:</label>
+                <input type="number" id="salidas" th:field="*{salidas}" min="0" value="0">
+                <small>Cantidad de salidas (opcional)</small>
+            </div>
+
+            <div class="form-group">
+                <label for="inventarioFinal">Inventario Final:</label>
+                <input type="number" id="inventarioFinal" th:field="*{inventarioFinal}" min="0" readonly style="background-color: #e9ecef;">
+                <small>⚠️ Se calculará automáticamente - No editable</small>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary" id="btnActualizar">
+                    <ion-icon name="save-outline"></ion-icon>
+                    Actualizar Artículo
+                </button>
+                <a th:href="@{/articulos/gestionar}" class="btn-cancelar">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Solo el JavaScript necesario para calcular inventario final
+    document.addEventListener('DOMContentLoaded', function() {
+        const inventarioInicial = document.getElementById('inventarioInicial');
+        const entradas = document.getElementById('entradas');
+        const salidas = document.getElementById('salidas');
+        const inventarioFinal = document.getElementById('inventarioFinal');
+
+        function calcularInventarioFinal() {
+            const inicial = parseInt(inventarioInicial?.value) || 0;
+            const ent = parseInt(entradas?.value) || 0;
+            const sal = parseInt(salidas?.value) || 0;
+            const final = inicial + ent - sal;
+
+            if (inventarioFinal) {
+                inventarioFinal.value = final;
+            }
+        }
+
+        if (inventarioInicial) inventarioInicial.addEventListener('input', calcularInventarioFinal);
+        if (entradas) entradas.addEventListener('input', calcularInventarioFinal);
+        if (salidas) salidas.addEventListener('input', calcularInventarioFinal);
+
+        // Calcular inicialmente
+        calcularInventarioFinal();
+    });
+</script>
+
+</body>
+</html>

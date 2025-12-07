@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Artículos - Inventario</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+<div class="sideBar">
+    <h2>
+        <ion-icon name="cube-outline"></ion-icon>
+        INVENTARIOS
+    </h2>
+    <ul>
+        <li><a href="/articulos" class="active">
+            <ion-icon name="list-outline"></ion-icon>
+            Mostrar Artículos</a></li>
+        <li><a href="/articulos/registrarArticulo">
+            <ion-icon name="add-circle-outline"></ion-icon>
+            Registrar Artículo</a></li>
+        <li><a href="/articulos/gestionar">
+            <ion-icon name="create-outline"></ion-icon>
+            Editar Registro</a></li>
+        <li><a href="/movimientos">
+            <ion-icon name="swap-horizontal-outline"></ion-icon>
+            Movimientos</a></li>
+        <li><a href="/movimientos/historial">
+            <ion-icon name="time-outline"></ion-icon>
+            Historial</a></li>
+        <li><a href="/reportes">
+            <ion-icon name="document-text-outline"></ion-icon>
+            Reportes</a></li>
+        <li><a href="/loginCCPLL">
+            <ion-icon name="log-out-outline"></ion-icon>
+            Cerrar Sesión</a></li>
+    </ul>
+</div>
+
+<div class="contenido">
+    <h1>
+        <ion-icon name="list-outline"></ion-icon>
+        Inventario de Artículos
+    </h1>
+
+    <!-- Mensajes -->
+    <div th:if="${success}" class="mensaje-exito">
+        <ion-icon name="checkmark-circle-outline"></ion-icon>
+        <span th:text="${success}"></span>
+    </div>
+
+    <div th:if="${error}" class="mensaje-error">
+        <ion-icon name="alert-circle-outline"></ion-icon>
+        <span th:text="${error}"></span>
+    </div>
+
+    <div class="card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Artículos en Stock</h2>
+            <a href="/articulos/registrarArticulo" class="btn-primary">
+                <ion-icon name="add-circle-outline"></ion-icon>
+                Nuevo Artículo
+            </a>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Unidad</th>
+                <th>Precio</th>
+                <th>Inv. Inicial</th>
+                <th>Entradas</th>
+                <th>Salidas</th>
+                <th>Inv. Final</th>
+                <th>Estado</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="articulo : ${articulos}">
+                <td th:text="${articulo.codigo}">Código</td>
+                <td th:text="${articulo.descripcion}">Descripción</td>
+                <td th:text="${articulo.unidad}">Unidad</td>
+                <td th:text="${articulo.precio != null} ? 'S/ ' + ${#numbers.formatDecimal(articulo.precio, 1, 2)} : 'N/A'">
+                    Precio
+                </td>
+                <td th:text="${articulo.inventarioInicial}" class="cantidad">0</td>
+                <td th:text="${articulo.entradas}" class="cantidad">0</td>
+                <td th:text="${articulo.salidas}" class="cantidad">0</td>
+                <td th:text="${articulo.inventarioFinal}" class="cantidad">0</td>
+                <td>
+                    <span th:if="${articulo.inventarioFinal == 0}" class="categoria-badge" style="background: #f8d7da; color: #721c24;">
+                        <ion-icon name="alert-circle-outline"></ion-icon> Sin Stock
+                    </span>
+                    <span th:if="${articulo.inventarioFinal > 0 and articulo.inventarioFinal <= 10}" class="categoria-badge" style="background: #fff3cd; color: #856404;">
+                        <ion-icon name="warning-outline"></ion-icon> Stock Bajo
+                    </span>
+                    <span th:if="${articulo.inventarioFinal > 10}" class="categoria-badge" style="background: #d1edff; color: #004085;">
+                        <ion-icon name="checkmark-circle-outline"></ion-icon> En Stock
+                    </span>
+                </td>
+            </tr>
+            <tr th:if="${articulos.empty}">
+                <td colspan="9" style="text-align: center; color: #6c757d;">
+                    <ion-icon name="alert-circle-outline" style="font-size: 24px; margin-right: 10px;"></ion-icon>
+                    No hay artículos registrados
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+            <div class="cantidad">
+                Total de artículos: <span th:text="${articulos.size()}">0</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
