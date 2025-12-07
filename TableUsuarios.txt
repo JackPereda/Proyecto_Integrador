@@ -1,0 +1,9 @@
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) NOT NULL UNIQUE,
+    contraseña VARCHAR(100) NOT NULL,
+    rol VARCHAR(50) DEFAULT 'USER'
+);
+
+INSERT INTO usuarios (usuario, contraseña, rol) VALUES
+('logistica', '123456', 'ADMIN');
